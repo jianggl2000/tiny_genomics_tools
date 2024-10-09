@@ -36,9 +36,9 @@ BiocManager::install("TxDb.Hsapiens.UCSC.hg38.knownGene")
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 
 txdb = TxDb.Hsapiens.UCSC.hg38.knownGene
-promoters = promoters(txdb, upstream = 2000, downstream = 500)
+GRpromoter = promoters(txdb, upstream = 2000, downstream = 500)
 
-write.table(promoters, file="promoters.hg38.bed"))
+write.table(GRpromoter, file="promoters.hg38.bed"))
 ```
 
 ```
@@ -47,16 +47,16 @@ BiocManager::install("ChIPseeker")
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(ChIPseeker)
 
-promoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="gene")
+GRpromoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="gene")
 
-promoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="transcript")
+GRpromoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="transcript")
 
-bed <- data.frame(seqnames=seqnames(promoters),
-  starts=start(promoters)-1,
-  ends=end(promoters),
-  names=c(rep(".", length(promoters))),
-  scores=c(rep(".", length(promoters))),
-  strands=strand(promoters))
+bed <- data.frame(seqnames=seqnames(GRpromoters),
+  starts=start(GRpromoters)-1,
+  ends=end(GRpromoters),
+  names=c(rep(".", length(GRpromoters))),
+  scores=c(rep(".", length(GRpromoters))),
+  strands=strand(GRpromoters))
 
 write.table(bed, file="promoters.bed", quote=F, sep="\t", row.names=F, col.names=F)
 ```
