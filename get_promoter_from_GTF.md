@@ -26,7 +26,8 @@ https://useast.ensembl.org/info/data/ftp/index.html
 https://www.gencodegenes.org/human/
 
 ### extract promoter regions from the GTF file
-Use the command in get_promoter_from_GTF.sh to extract promoter positions.
+Use the commands in get_promoter_from_GTF.sh to extract promoter positions.
+There are two commands in the script, with one to extract promoter position for protein coding genes only, and the other one extract promoter positions for all genes in the gtf file.
 
-## use R package
+## use R packages
 
