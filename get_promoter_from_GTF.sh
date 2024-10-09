@@ -1,7 +1,7 @@
 # This awk script processes a GTF file to extract promoter regions for genes and outputs them in a tab-separated format.
-# Promoter is defined as +1500 ~ -500 bp region. Change the numbers if you want a different region
 # Only promoters for protein coding genes were exported. To get all genes, use the next command below
 
+#configure GTF file, and promoter regions.
 GTF=/path/to/your/genome.gtf
 upstream=1500
 downstream=500
@@ -54,7 +54,7 @@ $3 == "gene" {
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
-# this script will ouput all types of genes
+# this script will ouput promoter for all types of genes
 
 awk -v upstream=$upstream -v downstream=$downstream \
 'BEGIN {
