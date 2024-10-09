@@ -37,6 +37,7 @@ library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 
 txdb = TxDb.Hsapiens.UCSC.hg38.knownGene
 GRpromoter = promoters(txdb, upstream = 2000, downstream = 500)
+GRpromoter = promoters(genes(txdb), upstream = 2000, downstream = 500)
 
 bed <- data.frame(seqnames=seqnames(GRpromoter),
   starts=start(GRpromoter)-1,
