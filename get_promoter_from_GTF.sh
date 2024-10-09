@@ -40,6 +40,6 @@ $3 == "gene" {
     
     print gene_name[2], chr, promoter_start, promoter_end, strand
 }' $GTF | tee promoters.saf \
-    | awk '{print $2,$3,$4,$1,".",$5}' |sed '1d' > promoters.bed
+    | awk '{print $2,$3-1,$4,$1,".",$5}' |sed '1d' > promoters.bed
 
 
