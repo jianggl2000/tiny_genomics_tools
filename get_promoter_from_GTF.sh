@@ -2,6 +2,7 @@
 # Promoter is defined as +1500 ~ -500 bp. Change the numbers if you a different regions
 #
 
+GTF=/path/to/your/genome.gtf
 upstream=1500
 downstream=500
 
@@ -38,7 +39,7 @@ $3 == "gene" {
     if (promoter_start < 1) promoter_start = 1
     
     print gene_name[2], chr, promoter_start, promoter_end, strand
-}' $GTF | tee promoters.hg38.saf \
-    | awk '{print $2,$3,$4,$1,".",$5}' |sed '1d' > promoters.hg38.bed
+}' $GTF | tee promoters.saf \
+    | awk '{print $2,$3,$4,$1,".",$5}' |sed '1d' > promoters.bed
 
 
