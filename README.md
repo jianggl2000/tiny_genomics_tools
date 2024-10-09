@@ -1,4 +1,4 @@
-# Tiny bioinformatics tools
+# Tiny bioinformatics/genomics tools
 tiny bioinformatics tools
 
 
