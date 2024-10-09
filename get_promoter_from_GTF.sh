@@ -1,5 +1,5 @@
 # This awk script processes a GTF file to extract promoter regions for genes and outputs them in a tab-separated format.
-# Promoter is defined as +1500 ~ -500 bp. Change the numbers if you a different regions
+# Promoter is defined as +1500 ~ -500 bp region. Change the numbers if you want a different region
 #
 
 GTF=/path/to/your/genome.gtf
