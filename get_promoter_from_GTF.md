@@ -31,3 +31,32 @@ There are two commands in the script, with one to extract promoter position for 
 
 ## use R packages
 
+```
+BiocManager::install("TxDb.Hsapiens.UCSC.hg38.knownGene")
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+
+txdb = TxDb.Hsapiens.UCSC.hg38.knownGene
+promoters = promoters(txdb, upstream = 2000, downstream = 500)
+
+write.table(promoters, file="promoters.hg38.bed"))
+```
+
+```
+BiocManager::install("TxDb.Hsapiens.UCSC.hg38.knownGene")
+BiocManager::install("ChIPseeker")
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+library(ChIPseeker)
+
+promoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="gene")
+
+promoters <- getPromoters(TxDb=txdb, upstream=2000, downstream=500, by="transcript")
+
+bed <- data.frame(seqnames=seqnames(promoters),
+  starts=start(promoters)-1,
+  ends=end(promoters),
+  names=c(rep(".", length(promoters))),
+  scores=c(rep(".", length(promoters))),
+  strands=strand(promoters))
+
+write.table(bed, file="promoters.bed", quote=F, sep="\t", row.names=F, col.names=F)
+```
