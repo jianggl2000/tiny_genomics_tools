@@ -2,7 +2,7 @@
 
 ## Extract promoter from a GTF file
 
-### GTF file format
+### about GTF file format
 https://www.ensembl.org/info/website/upload/gff.html?redirect=no
 
 Fields must be tab-separated. Also, all but the final field in each feature line must contain a value; "empty" columns should be denoted with a '.'
@@ -19,7 +19,14 @@ attribute - A semicolon-separated list of tag-value pairs, providing additional 
 
 ### download a GTF file
 
+#### Ensembl FTP downloads website
+https://useast.ensembl.org/info/data/ftp/index.html
 
+#### GENCODE
+https://www.gencodegenes.org/human/
+
+### extract promoter regions from the GTF file
+Use the command in get_promoter_from_GTF.sh to extract promoter positions.
 
 ## use R package
 
