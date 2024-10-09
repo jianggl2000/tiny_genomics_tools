@@ -7,4 +7,4 @@ Extract the dosage field from the imputed VCF.gz file, and save it to a matrix f
 
 
 ## get_promoter_from_GTF.sh
-Extract promoter regions from a GTF file.
+Extract promoter regions from a GTF file. Save it as SAF and BED file format.
