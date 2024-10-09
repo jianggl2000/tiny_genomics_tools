@@ -1,6 +1,6 @@
 # This awk script processes a GTF file to extract promoter regions for genes and outputs them in a tab-separated format.
 # Promoter is defined as +1500 ~ -500 bp region. Change the numbers if you want a different region
-#
+# only promoters for protein coding genes were exported
 
 GTF=/path/to/your/genome.gtf
 upstream=1500
@@ -21,6 +21,11 @@ $3 == "gene" {
     
     split(a[9], attrs, ";")
     for (i in attrs) {
+        if (attrs[i] ~ /gene_type/) {
+            split(attrs[i], gene_type, " ")
+            if (gene_type[2] ~ /protein_coding/)
+                skip="FALSE"
+        }
         if (attrs[i] ~ /gene_name/) {
             split(attrs[i], gene_name, " ")
             gsub(/"/, "", gene_name[2])
@@ -29,17 +34,16 @@ $3 == "gene" {
     }
     
     if (strand == "+") {
-        promoter_start = start - downstream
-        promoter_end = start + upstream
+        promoter_start = start - upstream
+        promoter_end = start + downstream
     } else if (strand == "-") {
-        promoter_start = end - upstream
-        promoter_end = end + downstream
+        promoter_start = end - downstream
+        promoter_end = end + upstream
     }
     
     if (promoter_start < 1) promoter_start = 1
     
-    print gene_name[2], chr, promoter_start, promoter_end, strand
-}' $GTF | tee promoters.saf \
-    | awk '{print $2,$3-1,$4,$1,".",$5}' |sed '1d' > promoters.bed
-
+    if(skip=="FALSE") print gene_name[2], chr, promoter_start, promoter_end, strand
+}' $GTF | tee promoters.saf | \
+  awk '{print $2,$3-1,$4,$1,".",$5}' | sed '1d' > promoters.bed
 
