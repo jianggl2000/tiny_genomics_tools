@@ -1,10 +1,12 @@
-# This awk script processes a GTF file to extract promoter regions for genes and outputs them in a tab-separated SAF format.
+# This awk script processes a GTF file to extract promoter regions for genes and outputs them in a tab-separated format.
 # Promoter is defined as +1500 ~ -500 bp. Change the numbers if you a different regions
 #
 
-GTF=/dir/to/your/gtf/gencode.v33.primary_assembly.annotation.gtf
+upstream=1500
+downstream=500
 
-awk 'BEGIN {
+awk -v upstream=$upstream -v downstream=$downstream \
+'BEGIN {
     OFS="\t"
     print "GeneID\tChr\tStart\tEnd\tStrand"
 }
@@ -26,15 +28,17 @@ $3 == "gene" {
     }
     
     if (strand == "+") {
-        promoter_start = start - 500
-        promoter_end = start + 1500
+        promoter_start = start - downstream
+        promoter_end = start + upstream
     } else if (strand == "-") {
-        promoter_start = end - 1500
-        promoter_end = end + 500
+        promoter_start = end - upstream
+        promoter_end = end + downstream
     }
     
     if (promoter_start < 1) promoter_start = 1
     
     print gene_name[2], chr, promoter_start, promoter_end, strand
-}' $GTF > promoters.saf
+}' $GTF | tee promoters.hg38.saf \
+    | awk '{print $2,$3,$4,$1,".",$5}' |sed '1d' > promoters.hg38.bed
+
 
