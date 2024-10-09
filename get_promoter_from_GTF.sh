@@ -18,6 +18,7 @@ $3 == "gene" {
     start = $4
     end = $5
     strand = $7
+    skip=""
     
     split(a[9], attrs, ";")
     for (i in attrs) {
@@ -47,3 +48,43 @@ $3 == "gene" {
 }' $GTF | tee promoters.saf | \
   awk '{print $2,$3-1,$4,$1,".",$5}' | sed '1d' > promoters.bed
 
+############################################################################################################
+############################################################################################################
+############################################################################################################
+# this script will ouput all types of genes
+
+awk -v upstream=$upstream -v downstream=$downstream \
+'BEGIN {
+    OFS="\t"
+    print "GeneID\tChr\tStart\tEnd\tStrand"
+}
+
+$3 == "gene" {
+    split($0, a, "\t")
+    chr = $1
+    start = $4
+    end = $5
+    strand = $7
+    
+    split(a[9], attrs, ";")
+    for (i in attrs) {
+        if (attrs[i] ~ /gene_name/) {
+            split(attrs[i], gene_name, " ")
+            gsub(/"/, "", gene_name[2])
+            break
+        }
+    }
+    
+    if (strand == "+") {
+        promoter_start = start - upstream
+        promoter_end = start + downstream
+    } else if (strand == "-") {
+        promoter_start = end - downstream
+        promoter_end = end + upstream
+    }
+    
+    if (promoter_start < 1) promoter_start = 1
+    
+    if(skip=="FALSE") print gene_name[2], chr, promoter_start, promoter_end, strand
+}' $GTF | tee promoters.saf | \
+  awk '{print $2,$3-1,$4,$1,".",$5}' | sed '1d' > promoters.bed
