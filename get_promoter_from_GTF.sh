@@ -99,7 +99,7 @@ $3 == "gene" {
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
-#this script extract promoter for each transcript(need more work)
+#this script extract promoter for each transcript
 
 awk -v upstream=$upstream -v downstream=$downstream \
 'BEGIN {
@@ -117,11 +117,6 @@ $3 == "transcript" {
     
     split(a[9], attrs, ";")
     for (i in attrs) {
-        if (attrs[i] ~ /gene_type/) {
-            split(attrs[i], gene_type, " ")
-            if (gene_type[2] ~ /protein_coding/)
-                skip="FALSE"
-        }
         if (attrs[i] ~ /transcript_id/) {
             split(attrs[i], transcript_id, " ")
             gsub(/"/, "", transcript_id[2])
@@ -139,6 +134,6 @@ $3 == "transcript" {
     
     if (promoter_start < 1) promoter_start = 1
     
-    if(skip=="FALSE") print transcript_id[2], chr, promoter_start, promoter_end, strand
+    print transcript_id[2], chr, promoter_start, promoter_end, strand
 }' $GTF | tee promoters.transcript.saf | \
   awk '{print $2,$3-1,$4,$1,".",$5}' | sed '1d' > promoters.transcript.bed
